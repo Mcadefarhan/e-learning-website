@@ -87,6 +87,7 @@ body {
   border-radius: 5px;
   font-weight: bold;
   
+  
 }
 
 .cart {
@@ -96,5 +97,62 @@ body {
     border: 1px solid #7F00FF;
     padding: 8px 14px;
     border-radius: 5px;
+}
+
+/* Slideshow container */
+.slideshow-container {
+  position: relative;
+  width: 90%;         /* poora width le */
+  height: 100%;        /* screen ka 80% height */
+  margin: 0 auto;
+  overflow: hidden;
+}
+.slide {
+  width: 100%;
+  height: 80%;   /* fixed height hata de */
+}
+
+
+
+/* Each slide image */
+.slide img {
+  width: 100%;         /* poore container ki width lega */
+  height: 80%;        /* apni natural height maintain karega */
+  object-fit: content; /* bilkul crop nahi hoga */
+}
+
+
+/* Buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  transition: 0.3s;
+  user-select: none;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.next { right: 20px; }
+.prev { left: 20px; }
+
+.prev:hover, .next:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+/* Fade effect */
+.fade {
+  animation: fadeEffect 1s;
+}
+
+@keyframes fadeEffect {
+  from {opacity: .4}
+  to {opacity: 1}
 }
 
