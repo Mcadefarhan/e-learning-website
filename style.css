@@ -156,3 +156,143 @@ body {
   to {opacity: 1}
 }
 
+/* ===== FOOTER ===== */
+.footer {
+  background: #003366;  /* Navy blue */
+  color: #fff;
+  padding: 50px 40px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* LEFT SECTION */
+.footer-left {
+  flex: 1;
+  min-width: 250px;
+}
+
+.social-icons {
+  margin-bottom: 15px;
+}
+
+.social-icons a {
+  color: #fff;
+  margin-right: 12px;
+  font-size: 20px;
+  display: inline-block;
+  transition: 0.3s;
+}
+
+.social-icons a:hover {
+  color: #ffcc00;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px;
+}
+
+.footer-links li {
+  margin: 6px 0;
+}
+
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.address {
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 10px;
+  color: #ddd;
+}
+
+/* CENTER SECTION (Yellow Box) */
+.footer-center {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  justify-content: center;
+}
+
+.yellow-box {
+  background: #ffcc00;
+  padding: 25px 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  max-width: 220px;
+}
+
+.footer-logo {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+.yellow-box h2 {
+  margin: 8px 0 4px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.yellow-box p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* RIGHT SECTION */
+.footer-right {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-right h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 6px;
+}
+
+.footer-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-right li {
+  margin-bottom: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.footer-right span {
+  color: #ffcc00;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+/* BOTTOM COPYRIGHT */
+.footer-bottom {
+  text-align: center;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  margin-top: 30px;
+  font-size: 13px;
+  color: #ddd;
+}
