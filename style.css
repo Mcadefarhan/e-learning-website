@@ -1,298 +1,130 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+/* --- Global Styles & Variables --- */
+:root {
+    --udemy-purple: #5624d0;
+    --dark-charcoal: #1c1d1f;
+    --light-gray: #f7f9fa;
 }
 
 body {
-  background: #fff;
+    font-family: 'Poppins', sans-serif;
+    color: var(--dark-charcoal);
+    padding-top: 70px; /* To offset the fixed navbar */
 }
 
-/* Header */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  border-bottom: 1px solid #ddd;
-  position: sticky;
-  top: 0;
-  background: #fff;
-  z-index: 100;
+/* --- Navbar Styles --- */
+.navbar {
+    border-bottom: 1px solid #e8e9eb;
 }
 
-/* Left Section */
-.left-section {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+.navbar-brand {
+    color: var(--dark-charcoal) !important;
+    font-size: 1.5rem;
 }
 
-.logo {
-  font-size: 22px;
-  font-weight: bold;
-  color: #2d2f31;
-  cursor: pointer;
+.navbar .form-control {
+    border-radius: 20px;
+    background-color: #f7f9fa;
+    border: 1px solid #1c1d1f;
+}
+.navbar .form-control:focus {
+    background-color: white;
+    box-shadow: none;
 }
 
-.explore {
-  border: none;
-  background: none;
-  font-size: 16px;
-  cursor: pointer;
-  color: #2d2f31;
+/* Navbar Button Styles (Updated) */
+.navbar .btn-outline-dark {
+    border-color: var(--dark-charcoal);
+    color: var(--dark-charcoal);
+    font-weight: 600;
 }
 
-/* Search Box */
-.search-box {
-  flex: 1;
-  margin: 0 20px;
+.navbar .btn-outline-dark:hover {
+    background-color: #f7f9fa; /* Light gray background on hover */
+    color: var(--dark-charcoal);
 }
 
-.search-box input {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  font-size: 15px;
+.navbar .btn-dark {
+    background-color: var(--dark-charcoal);
+    border-color: var(--dark-charcoal);
+    font-weight: 600;
 }
 
-/* Right Section */
-.right-section {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+.navbar .btn-dark:hover {
+    background-color: #000; /* Slightly darker on hover */
+    border-color: #000;
 }
 
-.right-section a {
-  text-decoration: none;
-  font-size: 15px;
-  color: #2d2f31;
-}
-.login{
-    border: 1px solid #7F00FF;
-     padding: 8px 14px;
-     border-radius: 5px;
-     font-weight: bold ;
-     
-     
+.nav-icon-btn {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.signup {
-  border: 1px solid #7F00FF;
-  background-color: #9c5ed9;
-  padding: 8px 14px;
-  border-radius: 5px;
-  font-weight: bold;
-  
-  
+/* --- Hero Section --- */
+.hero-section {
+    background-color: var(--light-gray);
+    padding: 60px 0;
+    background-image: url('images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
-.cart {
-  font-size: 500px;
-}
-.lang{
-    border: 1px solid #7F00FF;
-    padding: 8px 14px;
-    border-radius: 5px;
+.hero-content {
+    max-width: 500px;
 }
 
-/* Slideshow container */
-.slideshow-container {
-  position: relative;
-  width: 90%;         /* poora width le */
-  height: 100%;        /* screen ka 80% height */
-  margin: 0 auto;
-  overflow: hidden;
+.hero-content .btn-primary {
+    background-color: var(--udemy-purple);
+    border-color: var(--udemy-purple);
 }
-.slide {
-  width: 100%;
-  height: 80%;   /* fixed height hata de */
+
+.hero-content .btn-primary:hover {
+    background-color: #401b9c;
+    border-color: #401b9c;
+}
+
+/* --- Course Card Styles --- */
+.course-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: 1px solid #e8e9eb;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+.card-title {
+    color: var(--dark-charcoal);
 }
 
 
-
-/* Each slide image */
-.slide img {
-  width: 100%;         /* poore container ki width lega */
-  height: 80%;        /* apni natural height maintain karega */
-  object-fit: content; /* bilkul crop nahi hoga */
+/* --- Category Box Styles --- */
+.category-box {
+    border: 1px solid #d1d7dc;
+    background-color: #fff;
+    transition: background-color 0.2s ease;
 }
 
-
-/* Buttons */
-.prev, .next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 24px;
-  transition: 0.3s;
-  user-select: none;
-  background: rgba(0,0,0,0.5);
-  border-radius: 50%;
-  z-index: 10;
+.category-box:hover {
+    background-color: var(--light-gray);
+    cursor: pointer;
 }
 
-.next { right: 20px; }
-.prev { left: 20px; }
-
-.prev:hover, .next:hover {
-  background: rgba(0,0,0,0.8);
+/* --- Testimonials --- */
+.blockquote-footer img {
+    width: 40px;
+    height: 40px;
 }
 
-/* Fade effect */
-.fade {
-  animation: fadeEffect 1s;
+/* --- Footer --- */
+footer a {
+    text-decoration: none;
+    transition: color 0.2s;
 }
-
-@keyframes fadeEffect {
-  from {opacity: .4}
-  to {opacity: 1}
-}
-
-/* ===== FOOTER ===== */
-.footer {
-  background: #003366;  /* Navy blue */
-  color: #fff;
-  padding: 50px 40px 20px;
-  font-family: Arial, sans-serif;
-}
-
-.footer-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  max-width: 1200px;
-  margin: auto;
-}
-
-/* LEFT SECTION */
-.footer-left {
-  flex: 1;
-  min-width: 250px;
-}
-
-.social-icons {
-  margin-bottom: 15px;
-}
-
-.social-icons a {
-  color: #fff;
-  margin-right: 12px;
-  font-size: 20px;
-  display: inline-block;
-  transition: 0.3s;
-}
-
-.social-icons a:hover {
-  color: #ffcc00;
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 15px;
-}
-
-.footer-links li {
-  margin: 6px 0;
-}
-
-.footer-links a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-.address {
-  font-size: 13px;
-  line-height: 1.6;
-  margin-top: 10px;
-  color: #ddd;
-}
-
-/* CENTER SECTION (Yellow Box) */
-.footer-center {
-  flex: 1;
-  min-width: 250px;
-  display: flex;
-  justify-content: center;
-}
-
-.yellow-box {
-  background: #ffcc00;
-  padding: 25px 20px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  max-width: 220px;
-}
-
-.footer-logo {
-  width: 70px;
-  margin-bottom: 10px;
-}
-
-.yellow-box h2 {
-  margin: 8px 0 4px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.yellow-box p {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-/* RIGHT SECTION */
-.footer-right {
-  flex: 1;
-  min-width: 250px;
-}
-
-.footer-right h3 {
-  font-size: 18px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid #fff;
-  padding-bottom: 6px;
-}
-
-.footer-right ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-right li {
-  margin-bottom: 12px;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.footer-right span {
-  color: #ffcc00;
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-/* BOTTOM COPYRIGHT */
-.footer-bottom {
-  text-align: center;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255,255,255,0.3);
-  margin-top: 30px;
-  font-size: 13px;
-  color: #ddd;
+footer a:hover {
+    color: #ccc !important;
 }

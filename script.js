@@ -1,19 +1,20 @@
-let slideIndex = 1;
-showSlides(slideIndex);
+// script.js
+console.log("E-learning platform script loaded successfully!");
 
-// Next/previous controls
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
+// Future JavaScript functionality can be added here.
+// For example:
+// 1. Form validation for search and login/signup.
+// 2. Dynamic loading of courses using an API.
+// 3. Interactive animations on scroll.
 
-// Show slides
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("slide");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  slides[slideIndex-1].style.display = "block";
-}
+document.addEventListener('DOMContentLoaded', function () {
+    // Example: Add a simple interaction
+    const courseCards = document.querySelectorAll('.course-card');
+    courseCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const title = card.querySelector('.card-title').innerText;
+            console.log(`You clicked on the course: ${title}`);
+            // In a real app, this would navigate to the course details page.
+        });
+    });
+});
