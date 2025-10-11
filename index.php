@@ -42,9 +42,19 @@
                     </div>
                 </form>
                 <div class="navbar-nav ms-auto align-items-center">
-                    <a href="#" class="btn btn-outline-dark me-2 nav-icon-btn">
-                        <i class="fas fa-globe"></i>
-                    </a>
+
+                    <!-- 🌐 Language Dropdown -->
+                    <div class="dropdown me-2">
+                        <button class="btn btn-outline-dark dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe"></i> <span id="selected-lang">English</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item lang-option" data-lang="en" href="#">English</a></li>
+                            <li><a class="dropdown-item lang-option" data-lang="hi" href="#">हिन्दी</a></li>
+                            <li><a class="dropdown-item lang-option" data-lang="fr" href="#">Français</a></li>
+                        </ul>
+                    </div>
+
                     <a href="login.php" class="btn btn-outline-dark me-2">Log In</a>
                     <a href="signup.php" class="btn btn-dark">Sign Up</a>
                 </div>
@@ -72,7 +82,7 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-6 mb-4">
                         <div class="card h-100 course-card">
-                            <img src="images/course-web-dev.jpg" class="card-img-top alt="Course Image">
+                            <img src="images/course-web-dev.jpg" class="card-img-top" alt="Course Image">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title fw-bold">The Complete Web Development Bootcamp</h5>
                                 <p class="card-text text-muted small">Angela Yu</p>
@@ -222,7 +232,7 @@
                      <h5 class="text-uppercase mb-4 fw-bold">Contact</h5>
                     <p><i class="fas fa-home me-3"></i> New Delhi, India</p>
                     <p><i class="fas fa-envelope me-3"></i> info@eduflect.com</p>
-                    <p><i class="fas fa-phone me-3"></i> + 917091987466</p>
+                    <p><i class="fas fa-phone me-3"></i> +91 7091987466</p>
                 </div>
             </div>
             <hr class="mb-4">
