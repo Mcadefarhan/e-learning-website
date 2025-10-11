@@ -1,3 +1,6 @@
+<?php
+// index.php
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,18 +35,18 @@
                 </ul>
                 <form class="d-flex mx-auto w-50">
                     <div class="input-group">
-                    <input type="search" class="form-control" placeholder="Search for anything" aria-label="Search">
+                        <input type="search" class="form-control" placeholder="Search for anything" aria-label="Search">
                         <button class="btn btn-dark" type="button">
                             <i class="fas fa-search"></i>
                         </button>
-                     </div>
+                    </div>
                 </form>
                 <div class="navbar-nav ms-auto align-items-center">
                     <a href="#" class="btn btn-outline-dark me-2 nav-icon-btn">
                         <i class="fas fa-globe"></i>
                     </a>
-                    <a href="login.html" class="btn btn-outline-dark me-2">Log In</a>
-                    <a href="signup.html" class="btn btn-dark">Sign Up</a>
+                    <a href="login.php" class="btn btn-outline-dark me-2">Log In</a>
+                    <a href="signup.php" class="btn btn-dark">Sign Up</a>
                 </div>
             </div>
         </div>
@@ -106,7 +109,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-4">
-                         <div class="card h-100 course-card">
+                        <div class="card h-100 course-card">
                             <img src="images/course-Digital.jpg" class="card-img-top" alt="Course Image">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title fw-bold">Digital Marketing Masterclass - 23 Courses in 1</h5>
@@ -125,7 +128,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-4">
-                         <div class="card h-100 course-card">
+                        <div class="card h-100 course-card">
                             <img src="images/course-graphicDesign.jpg" class="card-img-top" alt="Course Image">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title fw-bold">Graphic Design Masterclass: Learn GREAT Design</h5>
@@ -190,7 +193,7 @@
                                 <blockquote class="blockquote mb-0">
                                     <p>"I learned Python from scratch here. The instructor was amazing and explained everything clearly."</p>
                                     <footer class="blockquote-footer d-flex align-items-center">
-                                         <img src="https://i.pravatar.cc/50?img=2" class="rounded-circle me-2" alt="Student">
+                                        <img src="https://i.pravatar.cc/50?img=2" class="rounded-circle me-2" alt="Student">
                                         Rohan Verma <cite title="Source Title">, Data Analyst</cite>
                                     </footer>
                                 </blockquote>
@@ -219,7 +222,7 @@
                      <h5 class="text-uppercase mb-4 fw-bold">Contact</h5>
                     <p><i class="fas fa-home me-3"></i> New Delhi, India</p>
                     <p><i class="fas fa-envelope me-3"></i> info@eduflect.com</p>
-                    <p><i class="fas fa-phone me-3"></i> + 91 123 456 7890</p>
+                    <p><i class="fas fa-phone me-3"></i> + 917091987466</p>
                 </div>
             </div>
             <hr class="mb-4">
