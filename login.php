@@ -1,35 +1,7 @@
 <?php
 session_start();
-require_once __DIR__ . "/Backend/db_connect.php";
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = trim($_POST['email'] ?? '');
-    $password = trim($_POST['password'] ?? '');
-
-    if (empty($email) || empty($password)) {
-        $error = "Please fill in all fields.";
-    } else {
-        $stmt = $conn->prepare("SELECT id, fullname, password FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
-
-            if (password_verify($password, $user['password'])) {
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['fullname'] = $user['fullname'];
-                header("Location: dashboard.php");
-                exit;
-            } else {
-                $error = "Invalid password.";
-            }
-        } else {
-            $error = "No account found with that email.";
-        }
-    }
-}
+$error = $_GET['error'] ?? '';
+$redirect = $_GET['redirect'] ?? ''; // e.g. view_course.php?id=1
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,18 +70,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="login-form-container">
       <div class="login-inner-card">
         <h2>Log in to your account</h2>
-        <?php
-$error = $_GET['error'] ?? '';
-?>
-<?php if (!empty($error)): ?>
-<div class="alert alert-danger text-center"><?= htmlspecialchars($error) ?></div>
-<?php endif; ?>
 
-         <form action="Backend/login_process.php" method="POST">
+        <?php if (!empty($error)): ?>
+          <div class="alert alert-danger text-center"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
 
+        <form action="Backend/login_process.php" method="POST" autocomplete="on">
+          <input type="hidden" name="redirect" value="<?= htmlspecialchars($redirect) ?>">
 
-          <input type="email" name="email" class="form-control" placeholder="Email" required>
-          <input type="password" name="password" class="form-control" placeholder="Password" required>
+          <div class="mb-2">
+            <input type="email" name="email" class="form-control" placeholder="Email" required>
+          </div>
+
+          <div class="mb-2">
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
+          </div>
+
+          <!-- Login as selector -->
+          <div class="mb-3">
+            <label for="role" class="form-label" style="font-size:0.9rem;color:#6b6f73;">Login as</label>
+            <select id="role" name="role" class="form-control" style="padding:10px;border-radius:6px;">
+              <option value="student" selected>Student</option>
+              <option value="teacher">Teacher</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
 
           <div class="forgot-link">
             <a href="#">Forgot Password?</a>
