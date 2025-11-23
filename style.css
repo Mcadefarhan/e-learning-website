@@ -1,19 +1,38 @@
-/* --- Global Styles & Variables --- */
+/* --- Global Styles & Variables (Light Mode Defaults) --- */
 :root {
     --udemy-purple: #5624d0;
     --dark-charcoal: #1c1d1f;
     --light-gray: #f7f9fa;
+    --navbar-bg: #fff;
+    --card-bg: #fff;
+    --border-color: #e8e9eb;
 }
+
+/* --- DARK MODE VARIABLES (Activated by adding .dark class to <html>) --- */
+html.dark {
+    /* Invert colors for dark theme */
+    --dark-charcoal: #f7f9fa; /* Light text on dark bg */
+    --light-gray: #303234;   /* Darker background for light elements */
+    --navbar-bg: #1c1d1f;
+    --card-bg: #2d2f31;
+    --border-color: #525456;
+
+    background-color: #1c1d1f;
+    color: var(--dark-charcoal);
+}
+
 
 body {
     font-family: 'Poppins', sans-serif;
     color: var(--dark-charcoal);
     padding-top: 70px; /* To offset the fixed navbar */
+    background-color: var(--card-bg); /* Applies to light and dark mode */
 }
 
-/* --- Navbar Styles --- */
+/* --- Navbar Styles (Light Mode) --- */
 .navbar {
-    border-bottom: 1px solid #e8e9eb;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--navbar-bg) !important;
 }
 
 .navbar-brand {
@@ -21,23 +40,27 @@ body {
     font-size: 1.5rem;
 }
 
+/* Search Form */
 .navbar .form-control {
     border-radius: 20px;
     background-color: #f7f9fa;
-    border: 1px solid #1c1d1f;
+    border: 1px solid var(--dark-charcoal);
+    color: var(--dark-charcoal);
 }
 .navbar .form-control:focus {
     background-color: white;
     box-shadow: none;
 }
+.navbar .form-control::placeholder {
+    color: #6a6f73;
+}
 
-/* Navbar Button Styles (Updated) */
+/* Navbar Button Styles */
 .navbar .btn-outline-dark {
     border-color: var(--dark-charcoal);
     color: var(--dark-charcoal);
     font-weight: 600;
 }
-
 .navbar .btn-outline-dark:hover {
     background-color: #f7f9fa; /* Light gray background on hover */
     color: var(--dark-charcoal);
@@ -48,7 +71,6 @@ body {
     border-color: var(--dark-charcoal);
     font-weight: 600;
 }
-
 .navbar .btn-dark:hover {
     background-color: #000; /* Slightly darker on hover */
     border-color: #000;
@@ -61,34 +83,125 @@ body {
     align-items: center;
     justify-content: center;
 }
+.navbar-nav .btn {
+    line-height: 1.5; /* Ensure button content aligns well with other nav elements */
+}
+
+
+/* ---------------------------------------------------------------------- */
+/* --- DARK MODE OVERRIDES (Navbar) --- */
+
+html.dark .navbar {
+    background-color: var(--navbar-bg) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark .navbar-brand,
+html.dark .nav-link,
+html.dark .navbar .dropdown-menu .dropdown-item {
+    color: var(--dark-charcoal) !important; /* White text for links */
+}
+
+html.dark .navbar .dropdown-menu {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+/* Search Form Overrides */
+html.dark .navbar .form-control {
+    background-color: #3e4143;
+    color: var(--dark-charcoal);
+    border: 1px solid var(--border-color);
+}
+html.dark .navbar .form-control::placeholder {
+    color: #b8babe;
+}
+html.dark .navbar .btn-dark {
+    background-color: var(--dark-charcoal); 
+    border-color: var(--dark-charcoal);
+    color: #1c1d1f; /* Dark icon */
+}
+html.dark .navbar .btn-dark:hover {
+    background-color: #f0f2f4;
+}
+
+/* Button Overrides */
+html.dark .btn-outline-dark {
+    border-color: var(--dark-charcoal);
+    color: var(--dark-charcoal);
+}
+html.dark .btn-outline-dark:hover {
+    background-color: #3e4143;
+    color: var(--dark-charcoal);
+}
+/* ---------------------------------------------------------------------- */
 
 /* --- Hero Section --- */
 .hero-section {
-    background-color: var(--light-gray);
-    padding: 60px 0;
     background-image: url('images/hero-bg.jpg');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    min-height: 450px;
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
 }
 
 .hero-content {
-    max-width: 500px;
+    background: rgba(255, 255, 255, 0.90);
+    padding: 35px;
+    border-radius: 12px;
+    max-width: 420px;
+    margin-left: 40px;
+    transition: background 0.3s; /* Transition for dark mode change */
 }
 
-.hero-content .btn-primary {
+.hero-content h1 {
+    font-weight: 700;
+    font-size: 40px;
+    color: var(--dark-charcoal);
+}
+
+.input-group-lg .form-control {
+    height: 55px;
+    font-size: 18px;
+}
+
+.input-group-lg .btn-primary {
     background-color: var(--udemy-purple);
     border-color: var(--udemy-purple);
+    width: 55px; /* Consistent height/width */
 }
 
-.hero-content .btn-primary:hover {
+.input-group-lg .btn-primary:hover {
     background-color: #401b9c;
-    border-color: #401b9c;
 }
+
+/* ---------------------------------------------------------------------- */
+/* --- DARK MODE OVERRIDES (Hero) --- */
+
+html.dark .hero-content {
+    /* Using a slightly dark background with high opacity */
+    background: rgba(30, 31, 33, 0.95);
+    /* Ensure general text within the container is light */
+    color: var(--dark-charcoal); 
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+html.dark .hero-content h1,
+html.dark .hero-content p,
+html.dark .hero-content .lead { /* Added .lead for Bootstrap consistency */
+    /* Force color override for headings and paragraphs */
+    color: var(--dark-charcoal) !important; 
+}
+/* ---------------------------------------------------------------------- */
+
 
 /* --- Course Card Styles --- */
 .course-card {
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    border: 1px solid #e8e9eb;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
 }
 
 .course-card:hover {
@@ -103,16 +216,55 @@ body {
 
 
 /* --- Category Box Styles --- */
+#categories {
+    background-color: var(--light-gray);
+    transition: background-color 0.3s;
+}
 .category-box {
-    border: 1px solid #d1d7dc;
-    background-color: #fff;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
     transition: background-color 0.2s ease;
+    text-decoration: none; /* Removed underline */
+    color: var(--dark-charcoal) !important;
 }
 
 .category-box:hover {
-    background-color: var(--light-gray);
+    background-color: #e6e8e9; /* Slightly darker gray in light mode */
     cursor: pointer;
 }
+
+/* ---------------------------------------------------------------------- */
+/* --- DARK MODE OVERRIDES (Courses & Categories) --- */
+
+html.dark #categories {
+    background-color: #1c1d1f !important;
+}
+
+html.dark .course-card,
+html.dark .card,
+html.dark .category-box {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--border-color);
+    color: var(--dark-charcoal);
+}
+
+html.dark .course-card:hover {
+    box-shadow: 0 4px 15px rgba(255,255,255,0.1);
+}
+
+html.dark .category-box:hover {
+    background-color: #3e4143; /* Slightly lighter dark color on hover */
+}
+
+html.dark .card-title,
+html.dark .card-text.small,
+html.dark .card-body h5,
+html.dark .blockquote-footer {
+    color: var(--dark-charcoal) !important;
+}
+
+/* ---------------------------------------------------------------------- */
+
 
 /* --- Testimonials --- */
 .blockquote-footer img {
@@ -121,6 +273,9 @@ body {
 }
 
 /* --- Footer --- */
+footer {
+    border-top: 1px solid var(--border-color);
+}
 footer a {
     text-decoration: none;
     transition: color 0.2s;

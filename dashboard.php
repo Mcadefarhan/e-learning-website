@@ -4,16 +4,65 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: signup.php?error=" . urlencode("Please login first."));
     exit;
 }
-$fullname = $_SESSION['fullname'] ?? 'User';
-// Only use the first initial if the full name is longer than one character, otherwise use the whole name.
-$initials = strtoupper(substr($fullname, 0, 1)); // Changed to first initial for common practice
-// If you want the first two letters of the name, keep the original: $initials = strtoupper(substr($fullname, 0, 2));
 
-// This is a minimal example, ideally you'd also check if $fullname is empty/invalid.
-if (empty($initials)) {
-    $initials = 'U'; // Default if name is somehow empty
+$fullname = $_SESSION['fullname'] ?? 'User';
+$initials = strtoupper(substr($fullname, 0, 1));
+if (empty($initials)) $initials = 'U';
+
+// ⭐ REQUIRED
+require_once __DIR__ . "/Backend/db_connect.php";
+
+// ⭐ Get wishlist categories
+$user = $_SESSION['user_id'];
+
+$wish_sql = "
+    SELECT DISTINCT courses.category 
+    FROM wishlist 
+    JOIN courses ON wishlist.course_id = courses.id
+    WHERE wishlist.user_id = ?
+";
+
+$stmt = $conn->prepare($wish_sql);
+$stmt->bind_param("i", $user);
+$stmt->execute();
+$res = $stmt->get_result();
+
+$wish_categories = [];
+while ($row = $res->fetch_assoc()) {
+    $wish_categories[] = $row['category'];
+}
+$stmt->close();
+
+// ⭐ Load popular courses based on wishlist
+if (!empty($wish_categories)) {
+
+    $placeholders = implode(",", array_fill(0, count($wish_categories), "?"));
+    $in_types = str_repeat("s", count($wish_categories));
+
+    $sql = "SELECT * FROM courses WHERE category IN ($placeholders) ORDER BY id DESC LIMIT 8";
+    $stmt2 = $conn->prepare($sql);
+
+    $stmt_params = [];
+    $stmt_params[] = &$in_types;
+
+    foreach ($wish_categories as $k => $cat) {
+        $stmt_params[] = &$wish_categories[$k];
+    }
+
+    call_user_func_array([$stmt2, 'bind_param'], $stmt_params);
+
+    $stmt2->execute();
+    $popular_courses = $stmt2->get_result()->fetch_all(MYSQLI_ASSOC);
+
+} else {
+
+    $popular_courses = [
+        ["title" => "The Complete Web Development Bootcamp", "image" => "images/course-web-dev.jpg", "instructor" => "Angela Yu", "price" => 499],
+        ["title" => "Python for Data Science", "image" => "images/course-python.jpg", "instructor" => "Jose Portilla", "price" => 499]
+    ];
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,7 +185,7 @@ if (empty($initials)) {
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top navbar-logged-in">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="#">eduflect</a>
+            <a class="navbar-brand fw-bold" href="index.php">eduflect</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -162,7 +211,7 @@ if (empty($initials)) {
                 <div class="navbar-nav ms-auto align-items-center">
                     <a href="#" class="nav-link me-3 py-2">My learning</a> 
                     
-                    <a href="#" class="nav-link me-2 p-2"><i class="far fa-heart nav-icon"></i></a>
+                    <a href="wishlist.php" class="nav-link me-2 p-2"><i class="far fa-heart nav-icon"></i></a>
                     <a href="#" class="nav-link me-2 p-2"><i class="fas fa-shopping-cart nav-icon"></i></a>
                     <a href="#" class="nav-link me-2 p-2"><i class="far fa-bell nav-icon"></i></a>
                     
@@ -176,9 +225,9 @@ if (empty($initials)) {
                                 <strong><?= htmlspecialchars($fullname) ?></strong>
                                 <small>Student</small>
                             </div>
-                            <a href="#"><i class="fa-solid fa-user"></i> Edit Profile</a>
+                            <a href="edit_profile.php"><i class="fa-solid fa-user"></i> Edit Profile</a>
                             <a href="#"><i class="fa-solid fa-book"></i> My Learning</a>
-                            <a href="#"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                            <a href="wishlist.php"><i class="fa-solid fa-heart"></i> Wishlist</a>
                             <a href="#"><i class="fa-solid fa-bell"></i> Notifications</a>
                             <a href="#"><i class="fa-solid fa-gear"></i> Account Settings</a>
                             <a href="#"><i class="fa-solid fa-language"></i> Language</a>
@@ -197,53 +246,67 @@ if (empty($initials)) {
                 <p class="lead">Ready to jump back in? Let's start learning.</p>
             </div>
         </header>
-        <section id="courses" class="py-5">
-            <div class="container">
-                <h2 class="text-center mb-4 fw-bold">Our Most Popular Courses</h2>
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="card h-100 course-card">
-                            
-                            <img src="images/course-web-dev.jpg" class="card-img-top" alt="Course Image">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title fw-bold">The Complete Web Development Bootcamp</h5>
-                                <p class="card-text text-muted small">Angela Yu</p>
-                                <div class="rating mb-2">
-                                    <span class="text-warning">4.7</span>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star-half-alt text-warning"></i>
-                                    <span class="text-muted">(123,456)</span>
-                                </div>
-                                <h5 class="mt-auto fw-bold">₹499 <small class="text-muted text-decoration-line-through">₹3,199</small></h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="card h-100 course-card">
-                            
-                            <img src="images/course-python.jpg" class="card-img-top" alt="Course Image">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title fw-bold">Python for Data Science and Machine Learning</h5>
-                                <p class="card-text text-muted small">Jose Portilla</p>
-                                <div class="rating mb-2">
-                                    <span class="text-warning">4.6</span>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star-half-alt text-warning"></i>
-                                    <span class="text-muted">(98,765)</span>
-                                </div>
-                                <h5 class="mt-auto fw-bold">₹499 <small class="text-muted text-decoration-line-through">₹3,199</small></h5>
-                            </div>
-                        </div>
-                    </div>
+       <section id="courses" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4 fw-bold">Our Most Popular Courses</h2>
+        <div class="row">
+
+        <?php foreach ($popular_courses as $c): ?>
+
+    <?php
+    // compute correct image URL
+    if (!empty($c['image']) && file_exists(__DIR__ . '/uploads/courses/' . $c['image'])) {
+        $imgUrl = 'uploads/courses/' . htmlspecialchars($c['image']);
+    } else {
+        $imgUrl = 'images/course-placeholder.jpg';
+    }
+
+    // check wishlist
+    $inWishlist = isset($wishlistIds[(int)$c['id']]);
+    ?>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card h-100">
+            <img src="<?= $imgUrl ?>" class="card-img-top" alt="<?= htmlspecialchars($c['title']) ?>">
+
+            <div class="card-body d-flex flex-column">
+
+                <h5 class="fw-semibold"><?= htmlspecialchars($c['title']) ?></h5>
+                <p class="text-muted small"><?= htmlspecialchars($c['instructor']) ?></p>
+                <h5 class="fw-bold mt-auto">₹<?= number_format($c['price'], 2) ?></h5>
+
+                <div class="d-flex gap-2 mt-3">
+
+                    <a href="view_course.php?id=<?= $c['id'] ?>" 
+                       class="btn btn-sm btn-outline-primary">
+                        View
+                    </a>
+
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <a href="wishlist_add.php?id=<?= $c['id'] ?>"
+                           class="btn btn-sm <?= $inWishlist ? 'btn-danger' : 'btn-outline-danger' ?>">
+                           <?= $inWishlist ? '♥ In Wishlist' : '♡ Wishlist' ?>
+                        </a>
+                    <?php else: ?>
+                        <a href="login.php"
+                           class="btn btn-sm btn-outline-danger">
+                           ♡ Wishlist
+                        </a>
+                    <?php endif; ?>
+
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
+
+<?php endforeach; ?>
+
+
+
+        </div>
+    </div>
+</section>
+
         <section id="categories" class="py-5 bg-light"></section>
         <section id="testimonials" class="py-5"></section>
     </main>

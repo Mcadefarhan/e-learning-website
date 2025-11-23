@@ -74,7 +74,7 @@ $initials = strtoupper(substr($fullname, 0, 2));
 <!-- Topbar (full width) -->
 <nav class="navbar navbar-expand-lg navbar-logged-in">
   <div class="container-fluid px-4">
-    <a class="navbar-brand fw-bold" href="#">eduflect Admin</a>
+    <a class="navbar-brand fw-bold" href="../index.php">eduflect Admin</a>
 
     <div class="ms-auto d-flex align-items-center">
       <!-- Admin-only quick links -->

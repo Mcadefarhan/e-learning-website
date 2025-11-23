@@ -105,8 +105,16 @@ $redirect = $_GET['redirect'] ?? ''; // e.g. view_course.php?id=1
 
         <div class="social-login-divider">Or</div>
         <div class="social-buttons">
-          <button class="btn" type="button"><i class="fab fa-google"></i> Continue with Google</button>
-          <button class="btn" type="button"><i class="fab fa-facebook-f"></i> Continue with Facebook</button>
+          <!-- Google -->
+<a class="btn btn-outline-dark d-block mb-2" href="oauth/google_login.php">
+  <i class="fab fa-google me-2"></i> Continue with Google
+</a>
+
+<!-- Facebook -->
+<a class="btn btn-outline-dark d-block mb-2" href="oauth/facebook_login.php">
+  <i class="fab fa-facebook-f me-2"></i> Continue with Facebook
+</a>
+
           <button class="btn" type="button"><i class="fab fa-apple"></i> Continue with Apple</button>
         </div>
 

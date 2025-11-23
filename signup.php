@@ -128,7 +128,7 @@ if (isset($_GET['msg'])) {
         <?php endif; ?>
 
         <!-- NOTE: posts to your existing signup handler -->
-        <form method="post" action="backend/signup_process.php" novalidate>
+        <form method="post" action="Backend/signup_process.php" novalidate>
           <input type="text" name="fullname" class="form-control" placeholder="Full name" required>
           <input type="email" name="email" class="form-control" placeholder="Email" required>
           <input type="password" name="password" class="form-control" placeholder="Password" required>
@@ -155,7 +155,7 @@ if (isset($_GET['msg'])) {
           By signing up, you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
         </p>
 
-        <p class="login-link">Already have an account? <a href="login.html">Log in</a></p>
+        <p class="login-link">Already have an account? <a href="login.php">Log in</a></p>
       </div>
     </div>
   </div>

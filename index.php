@@ -1,10 +1,23 @@
 <?php
 // index.php
-session_start(); // 🟢 ADD THIS
+session_start(); // ADD THIS
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+(function(){
+  try {
+    var t = localStorage.getItem('eduflect_theme');
+    if(t === 'dark') document.documentElement.classList.add('dark');
+    else if(t === 'light') document.documentElement.classList.remove('dark');
+    else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  } catch(e){}
+})();
+</script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>eduflect | An E-learning Platform</title>
@@ -15,7 +28,6 @@ session_start(); // 🟢 ADD THIS
 </head>
 <body>
 
-  <!-- 🧭 NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="index.php">eduflect</a>
@@ -40,7 +52,6 @@ session_start(); // 🟢 ADD THIS
           </li>
         </ul>
 
-        <!-- 🔍 Search Form -->
         <form class="d-flex mx-auto w-50" action="courses.php" method="get">
           <div class="input-group">
             <input type="search" name="search" class="form-control" placeholder="Search for anything" aria-label="Search">
@@ -50,10 +61,12 @@ session_start(); // 🟢 ADD THIS
           </div>
         </form>
 
-        <!-- 🟢 LOGIN / LOGOUT BUTTONS -->
         <div class="navbar-nav ms-auto align-items-center">
+          <button id="themeToggle" class="btn nav-icon-btn ms-2" title="Toggle theme">
+          <i id="themeIcon" class="fas fa-moon"></i>
+          </button>
 
-          <!-- 🌐 Language Dropdown -->
+
           <div class="dropdown me-2">
             <button class="btn btn-outline-dark dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-globe"></i> <span id="selected-lang">English</span>
@@ -65,31 +78,46 @@ session_start(); // 🟢 ADD THIS
             </ul>
           </div>
 
-          <?php if (isset($_SESSION['user_id'])): ?>
-              
-              <a href="dashboard.php" class="btn btn-outline-dark me-2">
-                Hi, <?= htmlspecialchars($_SESSION['fullname']) ?>
-              </a>
+          <?php
+// Decide dashboard link based on role
+$dashboardLink = "dashboard.php"; // default = student dashboard
 
-              <a href="logout.php" class="btn btn-danger">Logout</a>
+if (!empty($_SESSION['role'])) {
+    $role = strtolower($_SESSION['role']);
 
-          <?php else: ?>
+    if ($role === "admin") {
+        $dashboardLink = "admin/dashboard.php";
+    } elseif ($role === "student") {
+        $dashboardLink = "dashboard.php";
+    }
+}
+?>
 
-              <a href="login.php" class="btn btn-outline-dark me-2">Log In</a>
-              <a href="signup.php" class="btn btn-dark">Sign Up</a>
+<?php if (isset($_SESSION['user_id'])): ?>
 
-          <?php endif; ?>
+    <a href="<?= $dashboardLink ?>" class="btn btn-outline-dark me-2">
+        Hi, <?= htmlspecialchars($_SESSION['fullname']) ?>
+    </a>
+
+    <a href="logout.php" class="btn btn-danger">Logout</a>
+
+<?php else: ?>
+
+    <a href="login.php" class="btn btn-outline-dark me-2">Log In</a>
+    <a href="signup.php" class="btn btn-dark">Sign Up</a>
+
+<?php endif; ?>
+
 
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- 🏠 HERO SECTION -->
   <main>
     <header class="hero-section">
       <div class="container">
-        <div class="hero-content bg-white p-4 shadow-lg">
+        <div class="hero-content p-4 shadow-lg">
           <h1 class="display-5 fw-bold">New skills, new future</h1>
           <p class="lead">Start learning from the world's best instructors. Find the right course for you.</p>
           <form class="input-group input-group-lg" action="courses.php" method="get">
@@ -100,7 +128,6 @@ session_start(); // 🟢 ADD THIS
       </div>
     </header>
 
-    <!-- ⭐ Popular Courses (Static Example) -->
     <section id="courses" class="py-5">
       <div class="container">
         <h2 class="text-center mb-4 fw-bold">Our Most Popular Courses</h2>
@@ -152,7 +179,6 @@ session_start(); // 🟢 ADD THIS
       </div>
     </section>
 
-    <!-- 🏷️ Categories -->
     <section id="categories" class="py-5 bg-light">
       <div class="container">
         <h2 class="text-center mb-4 fw-bold">Popular Categories</h2>
@@ -173,7 +199,6 @@ session_start(); // 🟢 ADD THIS
       </div>
     </section>
 
-    <!-- 💬 Testimonials -->
     <section id="testimonials" class="py-5">
       <div class="container">
         <h2 class="text-center mb-4 fw-bold">What Our Students Say</h2>
@@ -209,7 +234,6 @@ session_start(); // 🟢 ADD THIS
     </section>
   </main>
 
-  <!-- 🦶 FOOTER -->
   <footer class="bg-dark text-white pt-5 pb-4">
     <div class="container text-center text-md-start">
       <div class="row">
@@ -243,5 +267,44 @@ session_start(); // 🟢 ADD THIS
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+// DARK MODE TOGGLE BUTTON JS
+document.getElementById("themeToggle").addEventListener("click", function () {
+  document.documentElement.classList.toggle("dark");
+
+  if (document.documentElement.classList.contains("dark")) {
+      localStorage.setItem("eduflect_theme", "dark");
+      document.getElementById("themeIcon").className = "fas fa-sun";
+  } else {
+      localStorage.setItem("eduflect_theme", "light");
+      document.getElementById("themeIcon").className = "fas fa-moon";
+  }
+});
+
+// On page load - set correct icon
+if (document.documentElement.classList.contains("dark")) {
+  document.getElementById("themeIcon").className = "fas fa-sun";
+} else {
+  document.getElementById("themeIcon").className = "fas fa-moon";
+}
+
+
+// LANGUAGE SELECTOR JS
+document.querySelectorAll('.lang-option').forEach(item => {
+    item.addEventListener('click', function(e) {
+        e.preventDefault();
+        const selectedText = this.textContent;
+        // Update the display text
+        document.getElementById('selected-lang').textContent = selectedText;
+        
+        // In a real application, you would add logic here 
+        // to change the actual content language using PHP/server-side code.
+    });
+});
+</script>
+<script src="script.js"></script>
+
+
 </body>
 </html>
