@@ -209,7 +209,7 @@ if (!empty($wish_categories)) {
                 </form>
 
                 <div class="navbar-nav ms-auto align-items-center">
-                    <a href="#" class="nav-link me-3 py-2">My learning</a> 
+                    <a href="my_learning.php" class="nav-link me-3 py-2">My learning</a> 
                     
                     <a href="wishlist.php" class="nav-link me-2 p-2"><i class="far fa-heart nav-icon"></i></a>
                     <a href="#" class="nav-link me-2 p-2"><i class="fas fa-shopping-cart nav-icon"></i></a>
