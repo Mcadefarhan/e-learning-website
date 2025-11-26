@@ -25,6 +25,10 @@ session_start(); // ADD THIS
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Optional small reset to ensure chat fonts look consistent */
+    :root { --chat-accent-1: #6a4ff7; --chat-accent-2: #8b6dfc; }
+  </style>
 </head>
 <body>
 
@@ -304,6 +308,240 @@ document.querySelectorAll('.lang-option').forEach(item => {
 });
 </script>
 <script src="script.js"></script>
+<!-- CHATBOT WIDGET (updated: modern look, glass + gradient bubbles, robot icon) -->
+<style>
+/* ---------- Modern Chatbot Styles (replace previous chat styles) ---------- */
+
+/* Floating button (FAB) */
+#chatFab {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,var(--chat-accent-1),var(--chat-accent-2));
+  color: #fff;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  cursor: pointer;
+  box-shadow: 0px 12px 32px rgba(90, 40, 220, 0.35);
+  backdrop-filter: blur(8px);
+  transition: transform .18s ease, box-shadow .18s ease;
+  z-index: 2100;
+}
+#chatFab:hover { transform: translateY(-3px) scale(1.05); }
+
+/* If you prefer an image instead of emoji, style it */
+#chatFab img { width: 34px; height: 34px; display: block; }
+
+/* Chat widget container */
+#chatWidget {
+  position: fixed;
+  right: 22px;
+  bottom: 100px;
+  width: 370px;
+  height: 540px;
+  background: rgba(255,255,255,0.86);
+  border-radius: 16px;
+  backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2100;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+
+/* Header */
+#chatHeader{
+  padding: 12px 14px;
+  background: linear-gradient(90deg,var(--chat-accent-1),var(--chat-accent-2));
+  color: #fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+#chatHeader .title { font-weight:700; font-size:15px; letter-spacing:0.2px; }
+#chatHeader button { background: transparent; border:0; color: rgba(255,255,255,0.95); font-size:18px; }
+
+/* Message area */
+#chatMessages{
+  padding: 14px;
+  overflow-y:auto;
+  flex: 1 1 auto;
+  background: linear-gradient(180deg, rgba(251,251,254,0.6), rgba(245,245,251,0.6));
+}
+
+/* Rows and bubbles */
+.chat-row{ margin-bottom:12px; display:flex; gap:10px; align-items:flex-end; }
+.chat-row.user{ justify-content:flex-end; }
+.chat-bubble{ max-width:78%; padding:10px 12px; border-radius:12px; line-height:1.35; font-size:14px; }
+
+/* Bot bubble: glass card */
+.chat-bubble.bot{
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,255,0.85));
+  color:#111;
+  border:1px solid rgba(220,220,255,0.6);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 18px rgba(20,15,60,0.06);
+  border-radius: 12px;
+}
+
+/* User bubble: colored gradient pill */
+.chat-bubble.user{
+  background: linear-gradient(135deg,var(--chat-accent-1),var(--chat-accent-2));
+  color:#fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(70,40,180,0.12);
+}
+
+/* small meta text */
+.chat-typing{ font-size:13px; color:#666; margin-top:6px; }
+
+/* Composer */
+#chatComposer{
+  padding:12px;
+  border-top:1px solid rgba(0,0,0,0.04);
+  display:flex;
+  gap:8px;
+  background: rgba(255,255,255,0.98);
+}
+#chatComposer input{
+  flex:1;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid #e6e6f2;
+  font-size:14px;
+  outline: none;
+}
+#chatComposer input:focus { box-shadow: 0 6px 18px rgba(106,79,247,0.08); border-color: rgba(106,79,247,0.25); }
+#chatComposer button{
+  background: linear-gradient(135deg,var(--chat-accent-1),var(--chat-accent-2));
+  color:#fff;
+  border:0;
+  padding:9px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* responsive tweaks */
+@media (max-width:420px){
+  #chatWidget{ width: calc(100% - 24px); right:12px; left:12px; bottom:90px; height:60vh; }
+  #chatFab{ right:14px; bottom:14px; width:56px; height:56px; font-size:20px; }
+}
+</style>
+
+<!-- Floating chat button with robot SVG icon -->
+<button id="chatFab" aria-label="Open chat" title="Open eduflect assistant">
+  <!-- Icon from Iconify (SVG) — you can replace with a local SVG if preferred -->
+  <img src="https://api.iconify.design/mdi/robot.svg?color=white" alt="robot icon">
+</button>
+
+<div id="chatWidget" role="dialog" aria-modal="false" aria-label="eduflect assistant">
+  <div id="chatHeader">
+    <div class="title">eduflect Assistant</div>
+    <div><button id="chatClose" aria-label="Close chat">✕</button></div>
+  </div>
+
+  <div id="chatMessages" aria-live="polite" aria-atomic="false"></div>
+
+  <div id="chatComposer" role="form">
+    <input id="chatInput" placeholder="Type your message..." aria-label="Type a message" autocomplete="off" />
+    <button id="chatSend">Send</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const fab = document.getElementById('chatFab');
+  const widget = document.getElementById('chatWidget');
+  const closeBtn = document.getElementById('chatClose');
+  const messagesEl = document.getElementById('chatMessages');
+  const input = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('chatSend');
+
+  let openState = false;
+
+  function openChat(){ widget.style.display='flex'; widget.setAttribute('aria-modal','true'); input.focus(); openState=true; }
+  function closeChat(){ widget.style.display='none'; widget.setAttribute('aria-modal','false'); openState=false; }
+
+  fab.addEventListener('click', ()=> openState ? closeChat() : openChat());
+  closeBtn.addEventListener('click', closeChat);
+
+  // add message (bot can pass HTML if allowHtml=true)
+  function addMessage(content, who='bot', allowHtml=false) {
+    const row = document.createElement('div');
+    row.className = 'chat-row ' + (who==='user' ? 'user' : 'bot');
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble ' + (who==='user' ? 'user' : 'bot');
+    if (allowHtml && who === 'bot') {
+      bubble.innerHTML = content; // server-generated safe HTML (links)
+    } else {
+      bubble.textContent = content;
+    }
+    row.appendChild(bubble);
+    messagesEl.appendChild(row);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function setTyping(on) {
+    if (on) {
+      if (!messagesEl.querySelector('.chat-typing')) {
+        const el = document.createElement('div'); el.className='chat-typing'; el.textContent='Assistant is typing...'; messagesEl.appendChild(el);
+      }
+    } else {
+      messagesEl.querySelectorAll('.chat-typing').forEach(e=>e.remove());
+    }
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  async function sendMessage(text) {
+    if (!text || !text.trim()) return;
+    addMessage(text, 'user', false);
+    input.value=''; input.disabled=true; sendBtn.disabled=true;
+    setTyping(true);
+
+    try {
+      const res = await fetch('chatbot_api.php', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ message: text })
+      });
+
+      if (!res.ok) {
+        const txt = await res.text();
+        addMessage('Error: ' + txt, 'bot', false);
+      } else {
+        const data = await res.json();
+        // server returns { reply: 'plain text', reply_html: '<a...>', await_field: true/false }
+        if (data.reply_html) {
+          addMessage(data.reply_html, 'bot', true);
+        } else {
+          addMessage(data.reply || 'No reply.', 'bot', false);
+        }
+      }
+    } catch (err) {
+      addMessage('Network error: ' + err.message, 'bot', false);
+    } finally {
+      input.disabled=false; sendBtn.disabled=false; input.focus();
+      setTyping(false);
+    }
+  }
+
+  sendBtn.addEventListener('click', ()=> sendMessage(input.value));
+  input.addEventListener('keydown', (e)=> { if (e.key === 'Enter') { e.preventDefault(); sendMessage(input.value); } if (e.key === 'Escape') { closeChat(); } });
+
+  // Accessibility: announce that chat opens only when user types (no auto-wake)
+  // No initial welcome message — widget stays quiet until first user message.
+
+})();
+</script>
 
 
 </body>
